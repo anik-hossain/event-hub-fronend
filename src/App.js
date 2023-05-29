@@ -1,8 +1,38 @@
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Outlet,
+} from 'react-router-dom';
+
+import Home from 'pages/home';
+import PageRender from 'routes/pageRender';
+
 function App() {
     return (
-        <div className="App">
-            <h1 className="text-red-600 text-4xl">Hello World</h1>
-        </div>
+        <Router>
+            <div className="App">
+                <div className="main">
+                    <Routes>
+                        <Route exact path="/" element={<Home />} />
+                        <Route exact path="/:page" element={<Outlet />}>
+                            <Route
+                                exact
+                                path="/:page"
+                                element={<PageRender />}
+                            />
+                        </Route>
+                        <Route exact path="/:page/:id" element={<Outlet />}>
+                            <Route
+                                exact
+                                path="/:page/:id"
+                                element={<PageRender />}
+                            />
+                        </Route>
+                    </Routes>
+                </div>
+            </div>
+        </Router>
     );
 }
 
