@@ -1,14 +1,43 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom/dist';
 
-const TimeSlot = ({ visibility, date, data = [], closeTimeSlot }) => {
+const TimeSlot = ({
+    visibility,
+    date,
+    data = [],
+    closeTimeSlot,
+    currentTime,
+}) => {
+    console.log(currentTime);
     const options = { weekday: 'long', month: '2-digit', day: '2-digit' };
     const formattedDate = date.toLocaleDateString('en-US', options);
-    const mappedData = data.map((item, index) => ({
-        ...item,
-        isVisible: false,
-        key: `slot-${index}`,
-    }));
+    const mappedData = data.map((item, index) => {
+        console.log({
+            activeDay: new Date(date).getTime(),
+            currentTime: new Date(currentTime).getTime(),
+            compare: new Date(
+                `${new Date(currentTime).toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                })} ${item.time}`,
+            ).getTime(),
+        });
+        return {
+            ...item,
+            isVisible: false,
+            key: `slot-${index}`,
+            activeDay: new Date(date).getTime(),
+            currentTime: new Date(currentTime).getTime(),
+            compare: new Date(
+                `${new Date(currentTime).toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                })} ${item.time}`,
+            ).getTime(),
+        };
+    });
     const dateObj = new Date(date);
     const formattedDate2 = dateObj.toLocaleDateString('en-US', {
         month: '2-digit',
@@ -42,12 +71,16 @@ const TimeSlot = ({ visibility, date, data = [], closeTimeSlot }) => {
             <div className="time-slots mt-4 h-80 overflow-y-scroll">
                 {mappedData.map((time) => (
                     <div className="wrapper flex items-center" key={time.key}>
-                        <button
-                            className="border border-violet-600 px-4 py-2 rounded-full font-bold cursor-pointer text-violet-600 block my-2"
-                            onClick={() => handleTimeSlot(time.key)}
-                        >
-                            {time.time}
-                        </button>
+                        {(time.compare > time.currentTime ||
+                            time.compare < time.activeDay) && (
+                            <button
+                                className="border border-violet-600 px-4 py-2 rounded-full font-bold cursor-pointer text-violet-600 block my-2"
+                                onClick={() => handleTimeSlot(time.key)}
+                            >
+                                {time.time}
+                            </button>
+                        )}
+
                         <Link
                             to={`/create?date=${formattedDate2}&time=${time.time}`}
                             className={`${

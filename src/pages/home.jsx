@@ -9,12 +9,12 @@ function Home() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [slotVisibility, setSlotVisibility] = useState(false);
     const [data, setData] = useState([]);
+    const [currentTime, setCurrentTime] = useState(new Date());
 
     const isActiveDate = (date) => {
-        const currentDate = new Date();
         return (
-            date >= currentDate ||
-            date.toDateString() === currentDate.toDateString()
+            date >= currentTime ||
+            date.toDateString() === currentTime.toDateString()
         );
     };
 
@@ -32,6 +32,7 @@ function Home() {
         setSlotVisibility(true);
         try {
             const res = await fetchData(`/events/${formattedDate}`);
+            setCurrentTime(new Date(res.data.currentTime));
             setData(res.data.slots);
         } catch (error) {
             console.log(error);
@@ -93,6 +94,7 @@ function Home() {
                             date={selectedDate}
                             data={data}
                             closeTimeSlot={closeTimeSlot}
+                            currentTime={currentTime}
                         />
                     </div>
                 </div>
