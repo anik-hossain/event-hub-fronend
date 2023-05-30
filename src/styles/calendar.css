@@ -16,18 +16,26 @@
     color: #333;
 }
 .react-calendar button.react-calendar__tile {
-    @apply mx-1;
+    @apply m-1;
 }
 .react-calendar button.react-calendar__tile:not(:disabled) {
-    @apply text-violet-800 font-bold;
+    @apply text-violet-600 font-bold;
 }
 .react-calendar__tile--active {
-    @apply text-violet-800 font-bold bg-violet-300 rounded-full hover:bg-transparent relative;
+    @apply text-violet-600 font-bold bg-violet-300 rounded-full hover:bg-transparent relative;
 }
+.react-calendar__tile:enabled:hover,
 .react-calendar__tile--now {
     @apply bg-violet-300 rounded-full;
 }
+.react-calendar__tile--active,
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-    @apply bg-violet-500 text-white;
+    @apply bg-violet-500 !text-white;
+}
+
+@media (max-width: 768px) {
+    .react-calendar {
+        width: 100% !important;
+    }
 }
