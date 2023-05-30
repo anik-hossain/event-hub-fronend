@@ -8,21 +8,9 @@ const TimeSlot = ({
     closeTimeSlot,
     currentTime,
 }) => {
-    console.log(currentTime);
     const options = { weekday: 'long', month: '2-digit', day: '2-digit' };
     const formattedDate = date.toLocaleDateString('en-US', options);
     const mappedData = data.map((item, index) => {
-        console.log({
-            activeDay: new Date(date).getTime(),
-            currentTime: new Date(currentTime).getTime(),
-            compare: new Date(
-                `${new Date(currentTime).toLocaleDateString('en-US', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                })} ${item.time}`,
-            ).getTime(),
-        });
         return {
             ...item,
             isVisible: false,
